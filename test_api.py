@@ -17,7 +17,6 @@ def user_token() -> str:
     
     response = requests.post("http://localhost:3000/api/users", json=payload)
     
-    # МИДЛ-ПРАКТИКА: Если сервер ответит не 201, мы сразу увидим причину в логах
     assert response.status_code == 201, f"Неверный статус-код! Ответ сервера: {response.text}"
     
     token = response.json()["user"]["token"]
@@ -25,11 +24,8 @@ def user_token() -> str:
 
 
 def test_user_authentication_contract(user_token: str):
-    """Тест проверяет, что полученный токен соответствует контракту системы."""
-    # Проверяем, что токен — это не пустая строка
     assert user_token, "Получен пустой токен от бэкенда"
     
-    # Проверяем префикс нашего мок-токена
     assert user_token.startswith("mock-jwt-token-"), f"Токен имеет неверный формат: {user_token}"
     
     print(f"\n[INFO] Контракт API проверен успешно. Токен: {user_token}")
